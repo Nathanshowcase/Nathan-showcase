@@ -16,7 +16,6 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <title>Nathan's Showcase</title>
-    <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <style>
       :root {
         color-scheme: light dark;
@@ -123,16 +122,6 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
           });
         });
       });
-
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
     </script>
   </body>
 </html>
