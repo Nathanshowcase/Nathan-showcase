@@ -1,0 +1,16 @@
+# Dependencies (installed automatically, never hand-edited)
+node_modules/
+
+# Build output (regenerated automatically)
+dist/
+.astro/
+
+# Secrets - real values never get saved to git
+.env
+.env.local
+
+# OS/editor clutter
+.DS_Store
+
+# Netlify local state
+.netlify/
