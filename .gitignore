@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # Netlify local state
 .netlify/
+
+# Temporary photo drop zone (photos get moved into public/images/projects/ from here)
+new-photos-to-add/*
+!new-photos-to-add/.gitkeep
