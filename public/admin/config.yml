@@ -1,0 +1,34 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/projects"
+public_folder: "/images/projects"
+
+collections:
+  - name: "projects"
+    label: "Projects"
+    label_singular: "Project"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - {
+          label: "Category",
+          name: "category",
+          widget: "string",
+          hint: "e.g. Art, Product Design, Photography — type anything, new categories are fine",
+        }
+      - { label: "Cover Image", name: "coverImage", widget: "image" }
+      - {
+          label: "Additional Images",
+          name: "images",
+          widget: "list",
+          required: false,
+          field: { label: "Image", name: "image", widget: "image" },
+        }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Date", name: "date", widget: "datetime", required: false }
+      - { label: "Featured", name: "featured", widget: "boolean", required: false, default: false }
+      - { label: "Notes / write-up", name: "body", widget: "markdown", required: false }

@@ -1,17 +1,138 @@
 ---
+import { getCollection } from "astro:content";
 
+const allProjects = await getCollection("projects");
+const projects = allProjects.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const categories = [...new Set(projects.map((p) => p.data.category))];
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Nathan's Showcase</title>
+    <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+      }
+      header {
+        margin-bottom: 2rem;
+      }
+      h1 {
+        font-size: 1.75rem;
+        margin-bottom: 0.25rem;
+      }
+      .subtitle {
+        opacity: 0.7;
+        margin-top: 0;
+      }
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+      }
+      .filters button {
+        font: inherit;
+        padding: 0.4rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid currentColor;
+        background: none;
+        color: inherit;
+        cursor: pointer;
+        opacity: 0.7;
+      }
+      .filters button.active {
+        opacity: 1;
+        font-weight: 600;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.5rem;
+      }
+      .card {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+      .card img {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: 8px;
+        display: block;
+      }
+      .card h2 {
+        font-size: 1rem;
+        margin: 0.5rem 0 0.15rem;
+      }
+      .card .category {
+        font-size: 0.85rem;
+        opacity: 0.6;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Nathan's Showcase</h1>
+      <p class="subtitle">Art, product design, and other things I've made.</p>
+    </header>
+
+    <div class="filters" id="filters">
+      <button class="active" data-category="all">All</button>
+      {categories.map((c) => <button data-category={c}>{c}</button>)}
+    </div>
+
+    <div class="grid" id="grid">
+      {
+        projects.map((project) => (
+          <a class="card" data-category={project.data.category} href={`/projects/${project.id}/`}>
+            <img src={project.data.coverImage} alt={project.data.title} />
+            <h2>{project.data.title}</h2>
+            <p class="category">{project.data.category}</p>
+          </a>
+        ))
+      }
+    </div>
+
+    <script>
+      const buttons = document.querySelectorAll("#filters button");
+      const cards = document.querySelectorAll("#grid .card");
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          buttons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const category = btn.getAttribute("data-category");
+          cards.forEach((card) => {
+            const match = category === "all" || card.getAttribute("data-category") === category;
+            (card as HTMLElement).style.display = match ? "" : "none";
+          });
+        });
+      });
+
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
+  </body>
 </html>

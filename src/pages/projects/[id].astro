@@ -1,0 +1,80 @@
+---
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{project.data.title} · Nathan's Showcase</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+      }
+      a.back {
+        color: inherit;
+        opacity: 0.7;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 1.5rem;
+      }
+      h1 {
+        margin-bottom: 0.1rem;
+      }
+      .category {
+        opacity: 0.6;
+        margin-top: 0;
+      }
+      .cover {
+        width: 100%;
+        border-radius: 8px;
+        margin: 1rem 0;
+      }
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 0.75rem;
+        margin: 1.5rem 0;
+      }
+      .gallery img {
+        width: 100%;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="back" href="/">&larr; All projects</a>
+    <h1>{project.data.title}</h1>
+    <p class="category">{project.data.category}</p>
+    <img class="cover" src={project.data.coverImage} alt={project.data.title} />
+    {
+      project.data.images.length > 0 && (
+        <div class="gallery">
+          {project.data.images.map((src) => (
+            <img src={src} alt="" />
+          ))}
+        </div>
+      )
+    }
+    <Content />
+  </body>
+</html>
