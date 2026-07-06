@@ -8,9 +8,20 @@ dist/
 # Secrets - real values never get saved to git
 .env
 .env.local
+.env.production
 
 # OS/editor clutter
 .DS_Store
+.idea/
+
+# Claude Code assistant config (not part of the site)
+.claude/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # Netlify local state
 .netlify/
