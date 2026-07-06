@@ -15,7 +15,11 @@ Then open http://localhost:4321.
 
 ## Adding a new project
 
-No coding tools needed — do this straight from github.com:
+**Easiest way:** drag the picture into the `new-photos-to-add/` folder on your computer, then
+tell Claude the title, category, and (optionally) a short description. Claude handles the rest
+(saving the image in the right place, writing the project entry, and pushing it live).
+
+**Manual way (no AI helper needed),** straight from github.com:
 
 1. Upload the image(s) first: go to the `public/images/projects/` folder in the repo on
    github.com → **Add file** → **Upload files** → drag the image(s) in → commit.
