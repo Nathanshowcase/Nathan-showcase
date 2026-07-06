@@ -23,19 +23,33 @@ const { Content } = await render(project);
     <style>
       :root {
         color-scheme: light dark;
+        --chelsea-blue: #034694;
+        --chelsea-blue-light: #1b5ec2;
       }
       body {
         font-family: system-ui, sans-serif;
         max-width: 800px;
         margin: 0 auto;
         padding: 2rem 1.5rem 4rem;
+        background: #f4f7fb;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #0c1520;
+        }
       }
       a.back {
-        color: inherit;
-        opacity: 0.7;
+        color: var(--chelsea-blue);
+        opacity: 0.85;
         text-decoration: none;
         display: inline-block;
         margin-bottom: 1.5rem;
+        font-weight: 600;
+      }
+      @media (prefers-color-scheme: dark) {
+        a.back {
+          color: #cfe0ff;
+        }
       }
       h1 {
         margin-bottom: 0.1rem;

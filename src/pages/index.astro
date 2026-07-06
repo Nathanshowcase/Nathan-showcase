@@ -19,23 +19,43 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     <style>
       :root {
         color-scheme: light dark;
+        --chelsea-blue: #034694;
+        --chelsea-blue-light: #1b5ec2;
       }
       body {
         font-family: system-ui, sans-serif;
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 2rem 1.5rem 4rem;
+        margin: 0;
+        padding: 0 0 4rem;
+        background: #f4f7fb;
       }
-      header {
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #0c1520;
+        }
+      }
+      .hero {
+        background: linear-gradient(135deg, var(--chelsea-blue), var(--chelsea-blue-light));
+        color: #fff;
+        padding: 3rem 1.5rem 2.5rem;
+        border-radius: 0 0 28px 28px;
         margin-bottom: 2rem;
       }
+      .hero-inner {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
       h1 {
-        font-size: 1.75rem;
-        margin-bottom: 0.25rem;
+        font-size: 2rem;
+        margin-bottom: 0.35rem;
       }
       .subtitle {
-        opacity: 0.7;
+        opacity: 0.85;
         margin-top: 0;
+      }
+      main {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
       }
       .filters {
         display: flex;
@@ -47,15 +67,23 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
         font: inherit;
         padding: 0.4rem 0.9rem;
         border-radius: 999px;
-        border: 1px solid currentColor;
+        border: 1px solid var(--chelsea-blue);
         background: none;
-        color: inherit;
+        color: var(--chelsea-blue);
         cursor: pointer;
-        opacity: 0.7;
+        opacity: 0.75;
+      }
+      @media (prefers-color-scheme: dark) {
+        .filters button {
+          border-color: var(--chelsea-blue-light);
+          color: #cfe0ff;
+        }
       }
       .filters button.active {
         opacity: 1;
         font-weight: 600;
+        background: var(--chelsea-blue);
+        color: #fff;
       }
       .grid {
         display: grid;
@@ -66,6 +94,12 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
         text-decoration: none;
         color: inherit;
         display: block;
+        border-radius: 10px;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(3, 70, 148, 0.25);
       }
       .card img {
         width: 100%;
@@ -86,27 +120,31 @@ const categories = [...new Set(projects.map((p) => p.data.category))];
     </style>
   </head>
   <body>
-    <header>
-      <h1>Nathan's Showcase</h1>
-      <p class="subtitle">Art, product design, and other things I've made.</p>
-    </header>
-
-    <div class="filters" id="filters">
-      <button class="active" data-category="all">All</button>
-      {categories.map((c) => <button data-category={c}>{c}</button>)}
+    <div class="hero">
+      <div class="hero-inner">
+        <h1>Nathan's Showcase</h1>
+        <p class="subtitle">Art, product design, and other things I've made.</p>
+      </div>
     </div>
 
-    <div class="grid" id="grid">
-      {
-        projects.map((project) => (
-          <a class="card" data-category={project.data.category} href={`/projects/${project.id}/`}>
-            <img src={project.data.coverImage} alt={project.data.title} />
-            <h2>{project.data.title}</h2>
-            <p class="category">{project.data.category}</p>
-          </a>
-        ))
-      }
-    </div>
+    <main>
+      <div class="filters" id="filters">
+        <button class="active" data-category="all">All</button>
+        {categories.map((c) => <button data-category={c}>{c}</button>)}
+      </div>
+
+      <div class="grid" id="grid">
+        {
+          projects.map((project) => (
+            <a class="card" data-category={project.data.category} href={`/projects/${project.id}/`}>
+              <img src={project.data.coverImage} alt={project.data.title} />
+              <h2>{project.data.title}</h2>
+              <p class="category">{project.data.category}</p>
+            </a>
+          ))
+        }
+      </div>
+    </main>
 
     <script>
       const buttons = document.querySelectorAll("#filters button");
