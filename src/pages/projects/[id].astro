@@ -25,26 +25,45 @@ const { Content } = await render(project);
         color-scheme: light dark;
         --chelsea-blue: #034694;
         --chelsea-blue-light: #1b5ec2;
+        --ink: #16202b;
+        --paper: #ffffff;
+        --paper-muted: #f4f7fb;
+        --border: rgba(3, 70, 148, 0.12);
+      }
+      * {
+        box-sizing: border-box;
       }
       body {
-        font-family: system-ui, sans-serif;
-        max-width: 800px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        color: var(--ink);
+        max-width: 780px;
         margin: 0 auto;
-        padding: 2rem 1.5rem 4rem;
-        background: #f4f7fb;
+        padding: 2.5rem 1.5rem 5rem;
+        background: var(--paper-muted);
+        -webkit-font-smoothing: antialiased;
       }
       @media (prefers-color-scheme: dark) {
         body {
-          background: #0c1520;
+          background: #0b1420;
+          color: #eef3fb;
         }
+      }
+      :focus-visible {
+        outline: 3px solid var(--chelsea-blue-light);
+        outline-offset: 2px;
       }
       a.back {
         color: var(--chelsea-blue);
-        opacity: 0.85;
         text-decoration: none;
-        display: inline-block;
-        margin-bottom: 1.5rem;
-        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        margin-bottom: 1.75rem;
+        font-weight: 700;
+        font-size: 0.95rem;
+      }
+      a.back:hover {
+        text-decoration: underline;
       }
       @media (prefers-color-scheme: dark) {
         a.back {
@@ -52,43 +71,70 @@ const { Content } = await render(project);
         }
       }
       h1 {
-        margin-bottom: 0.1rem;
+        font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.25rem);
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        margin: 0 0 0.5rem;
       }
       .category {
-        opacity: 0.6;
-        margin-top: 0;
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--chelsea-blue);
+        background: rgba(3, 70, 148, 0.08);
+        padding: 0.25rem 0.65rem;
+        border-radius: 999px;
+        margin: 0 0 1.25rem;
+      }
+      @media (prefers-color-scheme: dark) {
+        .category {
+          color: #cfe0ff;
+          background: rgba(120, 170, 255, 0.15);
+        }
       }
       .cover {
         width: 100%;
-        border-radius: 8px;
-        margin: 1rem 0;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        margin: 0 0 1.5rem;
+        display: block;
       }
       .gallery {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         gap: 0.75rem;
-        margin: 1.5rem 0;
+        margin: 0 0 1.5rem;
       }
       .gallery img {
         width: 100%;
-        border-radius: 8px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        display: block;
+      }
+      main :global(p) {
+        line-height: 1.6;
+        font-size: 1.05rem;
       }
     </style>
   </head>
   <body>
     <a class="back" href="/">&larr; All projects</a>
     <h1>{project.data.title}</h1>
-    <p class="category">{project.data.category}</p>
+    <span class="category">{project.data.category}</span>
     <img class="cover" src={project.data.coverImage} alt={project.data.title} />
     {
       project.data.images.length > 0 && (
         <div class="gallery">
           {project.data.images.map((src) => (
-            <img src={src} alt="" />
+            <img src={src} alt="" loading="lazy" decoding="async" />
           ))}
         </div>
       )
     }
-    <Content />
+    <main>
+      <Content />
+    </main>
   </body>
 </html>
